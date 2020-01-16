@@ -11,6 +11,7 @@ package sqlmoviedatabase.be;
  * @author filip
  */
 public class Movie {
+
     private int MovId;
     private String Title;
     private String Category;
@@ -78,6 +79,13 @@ public class Movie {
     {
         this.Duration = duration;
     }
-    
-}
 
+       @Override
+    public String toString() {
+        return Title;
+    }
+   
+     
+    
+
+}
