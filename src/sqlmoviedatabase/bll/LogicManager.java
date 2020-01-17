@@ -17,6 +17,7 @@ import sqlmoviedatabase.be.Movie;
 import sqlmoviedatabase.bll.util.TimeConverter;
 import sqlmoviedatabase.dal.CategoryDAO;
 import sqlmoviedatabase.dal.DalController;
+import sqlmoviedatabase.dal.MovieDAO;
 
 /**
  *
@@ -26,6 +27,7 @@ import sqlmoviedatabase.dal.DalController;
 public class LogicManager implements LogicFacade{
     DalController dc = new DalController();
     CategoryDAO cd = new CategoryDAO();
+    MovieDAO md = new MovieDAO();
     private final TimeConverter timeConverter;
     
         public LogicManager() {
@@ -38,7 +40,7 @@ public class LogicManager implements LogicFacade{
         return dc.getAllMovies();
     }
 
-     public List<Movie> search(List<Movie> searchBase, String query, String cat) {
+     public List<Movie> search(List<Movie> searchBase, String query) {
           
        List<Movie> filtered = FXCollections.observableArrayList();
 
@@ -47,7 +49,7 @@ public class LogicManager implements LogicFacade{
         }
 
         for (Movie movie : searchBase) {
-            if (movie.getTitle().toLowerCase().contains(query.toLowerCase()) && movie.getCategory().toLowerCase().contains(cat.toLowerCase()))
+            if (movie.getTitle().toLowerCase().contains(query.toLowerCase()))
             {
                 filtered.add(movie);
             }
@@ -74,9 +76,23 @@ public class LogicManager implements LogicFacade{
 
         return filtered;
     }
+       
+        public List<Movie> searchrat(List<Movie> searchBase, int rate) {
+          
+       List<Movie> filtered = FXCollections.observableArrayList();
+
+        for (Movie movie : searchBase) {
+            if (movie.getImdb_Rating() >= rate ) //|| movie.getCategory().toLowerCase().contains(query.toLowerCase())
+            {
+                filtered.add(movie);
+            }
+        }
+
+        return filtered;
+    }
     @Override
     public Movie createMovie(String title, int time, String path, String genre) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      return md.createMovie(time, title, time, time, path, path, genre, path);
     }
 
     @Override
@@ -121,20 +137,22 @@ public class LogicManager implements LogicFacade{
             return  cd.getAllCategories();
       }
 
+   
     @Override
-    public void createCategory(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Category createCategory(String name) {
+      return cd.createCategory(name);
     }
 
     @Override
     public void deleteCategory(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       cd.deleteCategory(name);
     }
-
     @Override
-    public List<Movie> search(List<Movie> searchBase, String query) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void  editCategory(String name,String newname)
+    {
+        cd.EditCategory(name,newname);
     }
+    
      
 
 }
